@@ -2,9 +2,60 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFsDq3WD4127kPhNiRQd9RYGhf3J2aR5s&callback=initMap">
+    </script>
+    <script type="text/javascript">
+        var map;
+        var marker;
+        function initialize() {
+            var mapOptions = {
+                center: new google.maps.LatLng(-33.30578381949298, 26.523442268371582), zoom: 15
+            };
+            map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+            google.maps.event.addListener(map, 'click', function (event) {
+                placeMarker(event.latLng);
+            });
+        }
 
+        function placeMarker(location) {
+            if (marker) {
+                marker.setPosition(location)
+            } else {
+                marker = new google.maps.Marker({
+                position: location,
+                map: map
+                });
+            }
+            document.getElementById('latitude').value = location.lat();
+            document.getElementById('longitude').value = location.lng();
+        }
+    </script>
+</head>
+<body onload="initialize()">
+<h1>Crimemap</h1>
+<p>A map of recent criminal activity oin the Grahamstown area.</p>
+<div id="map-canvas"></div>
+
+<div id="newcrimeform">
+    <h2>Submit new crime</h2>
+    <form action="/submitcrime" method="post">
+        <label for="category">Category</label>
+        <select name="category" id="category">
+            <option value="mugging">Mugging</option>
+            <option value="breakin">Break In</option>
+        </select>
+        <label for="date">Date</label>
+        <input name="date" id="date" type="date">
+        <label for="latitude">Latitude</label>
+        <input name="latitude" id="latitude" type="text">
+        <label for="longitude">Longitude</label>
+        <input name="longitude" id="longitude" type="text">
+        <label for="description">Description</label>
+        <textarea name="description" id="description" placeholder="A brief but detailed description of the crime"></textarea>
+        <input type="submit" value="submit">
+    </form>
+</div>
 </body>
 </html>
