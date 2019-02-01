@@ -17,6 +17,17 @@
             google.maps.event.addListener(map, 'click', function (event) {
                 placeMarker(event.latLng);
             });
+            placeCrimes({{ crimes | safe }});
+        }
+
+        function placeCrimes(crimes) {
+            for (i=0; i<crimes.length; i++) {
+                crime = new google.maps.Marker({
+                    position: new google.maps.LatLng(crimes[i].latitude, crimes[i].longitude),
+                    map: map,
+                    title: crimes[i].date + '\n' + crimes[i].category + '\n' + crimes[i].description
+                });
+            }
         }
 
         function placeMarker(location) {
@@ -35,7 +46,7 @@
 </head>
 <body onload="initialize()">
 <h1>Crimemap</h1>
-<p>A map of recent criminal activity oin the Grahamstown area.</p>
+<p>A map of recent criminal activity in the Grahamstown area.</p>
 <div id="map-canvas"></div>
 
 <div id="newcrimeform">
