@@ -42,8 +42,8 @@ class DBHelper:
     def add_crime(self, category, date, latitude, longitude, desc):
         connection = self.connect()
         try:
-            query = "INSERT INTO crimes (category, date, latitude, longitude, description) \
-                     VALUES (%s, %s, %s, %s, %s)"
+            query = 'INSERT INTO crimes (category, date, latitude, longitude, description) \
+                     VALUES (%s, %s, %s, %s, %s)'
             with connection.cursor() as cursor:
                 cursor.execute(
                     query, (category, date, latitude, longitude, desc))
